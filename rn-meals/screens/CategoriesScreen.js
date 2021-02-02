@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   FlatList,
-  StyleSheet,
 } from 'react-native';
 
 import {CATEGORIES} from '../data/dummy-data';
@@ -27,7 +26,7 @@ const CategoriesScreen = props => {
 
   return (
     <FlatList
-      keyExtractor={(item, index) => item.id}
+      keyExtractor={(item) => item.id}
       data={CATEGORIES}
       renderItem={renderGridItem}
       numColumns={2}
@@ -38,14 +37,5 @@ const CategoriesScreen = props => {
 CategoriesScreen.navigationOptions = {
   headerTitle: 'Meal Categories',
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-});
 
 export default CategoriesScreen;

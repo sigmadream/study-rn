@@ -1,29 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 
-import { CATEGORIES } from '../data/dummy-data';
+import {CATEGORIES, MEALS} from '../data/dummy-data';
+import MealItem from '../components/MealItem';
 
 const CategoryMealScreen = (props) => {
-  const catId = props.navigation.getParam('categoryId');
-  const selectedCategory = CATEGORIES.find((cat) => cat.id === catId);
-  return (
-    <View style={styles.screen}>
-      <Text>The Category Meals</Text>
-      <Text>{selectedCategory.title}</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => {
+  const renderMealItem = itemData => {
+    return (
+      <MealItem
+        title={itemData.item.title}
+        image={itemData.item.imageUrl}
+        duration={itemData.item.duration}
+        complexity={itemData.item.complexity}
+        affordability={itemData.item.affordability}
+        onSelectMeal={() => {
           props.navigation.navigate({
             routeName: 'MealDetail',
+            params: {
+              mealId: itemData.item.id
+            }
           });
         }}
       />
-      <Button
-        title="Go to Back"
-        onPress={() => {
-          // props.navigation.goBack();
-          props.navigation.pop();
-        }}
+    );
+  };
+  const catId = props.navigation.getParam('categoryId');
+  const displayedMeals = MEALS.filter(
+    meal => meal.categoryIds.indexOf(catId) >= 0
+  );
+  return (
+    <View style={styles.screen}>
+      <FlatList
+        data={displayedMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+        style={{width: '100%'}}
       />
     </View>
   );
